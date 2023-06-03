@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements ICategoryService {
@@ -28,10 +30,14 @@ public class CategoryService implements ICategoryService {
         return Category;
     }
 
-    private Category getCategoryById(String id) {
+    public Category getCategoryById(String id) {
         return CategoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String
                         .format("không tồn tại", id)));
+    }
+
+    public List<CategoryDto> getAllCategory() {
+        return new ArrayList<>(CategoryRepository.findAll().stream().map((element) -> modelMapper.map(element, CategoryDto.class)).collect(Collectors.toList()));
     }
 
     @Override

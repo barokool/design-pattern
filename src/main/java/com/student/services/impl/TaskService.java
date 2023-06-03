@@ -3,6 +3,7 @@ package com.student.services.impl;
 import com.student.dtos.TaskDto;
 import com.student.entities.Task;
 import com.student.exceptions.NotFoundException;
+import com.student.observer.TaskList;
 import com.student.repositories.TaskRepository;
 import com.student.services.ITaskService;
 
@@ -14,12 +15,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TaskService implements ITaskService {
-    private final TaskRepository TaskRepository;
+    @Autowired
+    private  TaskRepository TaskRepository;
+    @Autowired
+    private  TaskList taskList;
+
     @Autowired
     private ModelMapper modelMapper;
-    public TaskService(TaskRepository TaskRepository) {
-        this.TaskRepository = TaskRepository;
+    public TaskService() {
+
     }
+
 
 
     private Task setTask(TaskDto dto, Task Task) {
@@ -49,6 +55,7 @@ public class TaskService implements ITaskService {
     public TaskDto createTask(TaskDto dto) {
         Task Task = new Task();
         setTask(dto, Task);
+        taskList.addTask(Task);
         return modelMapper.map(Task, TaskDto.class);
     }
 
@@ -64,6 +71,7 @@ public class TaskService implements ITaskService {
     public TaskDto deleteTask(String id) {
         Task Task = getTaskById(id);
         TaskRepository.delete(Task);
+        taskList.removeTask(Task);
         return modelMapper.map(Task, TaskDto.class);
     }
 

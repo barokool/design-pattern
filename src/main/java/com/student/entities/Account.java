@@ -29,9 +29,12 @@ public class Account {
     private String password;
     private List<String> roles = new ArrayList<>();
 
+    public boolean isTrangThai() {
+        return true;
+    }
 
 
-public static class AccountBuilder {
+    public static class AccountBuilder {
     private String name;
     private String gender;
     private Date dateOfBirth;
