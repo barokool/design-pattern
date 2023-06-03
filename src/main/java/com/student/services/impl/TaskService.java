@@ -3,8 +3,10 @@ package com.student.services.impl;
 import com.student.dtos.TaskDto;
 import com.student.entities.Task;
 import com.student.exceptions.NotFoundException;
+import com.student.factories.CreateEntity;
+import com.student.factories.EntitiesFactory;
 import com.student.repositories.TaskRepository;
-import com.student.services.ITaskService;
+import com.student.services.ITaskService_command;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TaskService implements ITaskService {
+public class TaskService implements ITaskService_command {
     private final TaskRepository TaskRepository;
     @Autowired
     private ModelMapper modelMapper;
@@ -47,9 +49,15 @@ public class TaskService implements ITaskService {
 
     @Override
     public TaskDto createTask(TaskDto dto) {
-        Task Task = new Task();
-        setTask(dto, Task);
-        return modelMapper.map(Task, TaskDto.class);
+//        Task Task = new Task();
+//        setTask(dto, Task);
+//        return modelMapper.map(Task, TaskDto.class);
+
+        EntitiesFactory<Task, TaskDto> taskFactory = new EntitiesFactory<>();
+        CreateEntity<Task, TaskDto> taskEntity = taskFactory.createEntity(dto);
+        Task task = taskEntity.create(dto);
+        TaskRepository.save(task);
+        return modelMapper.map(task, TaskDto.class);
     }
 
     @Override

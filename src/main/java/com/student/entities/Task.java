@@ -25,4 +25,11 @@ public class Task {
     @DBRef
     private Account user;
 
+    public Task(Account user, String description, String title, Category category, String status) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.category = category;
+        this.user = user;
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "comment")
 
 public class Comment {
+
     @Id
     private String id;
     private String description;
@@ -23,4 +24,11 @@ public class Comment {
 
     @DBRef
     private Account author;
+
+    public Comment(String description, Task task, Account author) {
+        this.description = description;
+        this.task = task;
+        this.author = author;
+    }
+
 }

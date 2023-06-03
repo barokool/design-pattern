@@ -4,7 +4,7 @@ import com.student.dtos.CategoryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ICategoryService {
+public interface ICategoryService_command {
     CategoryDto getCategory(String id);
 
     CategoryDto createCategory (CategoryDto dto);

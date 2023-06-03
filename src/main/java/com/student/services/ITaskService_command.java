@@ -4,7 +4,7 @@ import com.student.dtos.TaskDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ITaskService {
+public interface ITaskService_command {
     TaskDto getTask(String id);
 
     TaskDto createTask (TaskDto dto);

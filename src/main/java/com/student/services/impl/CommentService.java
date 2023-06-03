@@ -3,8 +3,10 @@ package com.student.services.impl;
 import com.student.dtos.CommentDto;
 import com.student.entities.Comment;
 import com.student.exceptions.NotFoundException;
+import com.student.factories.CreateEntity;
+import com.student.factories.EntitiesFactory;
 import com.student.repositories.CommentRepository;
-import com.student.services.ICommentService;
+import com.student.services.ICommentService_command;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,14 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentService implements ICommentService {
+public class CommentService implements ICommentService_command {
     private final CommentRepository CommentRepository;
     @Autowired
     private ModelMapper modelMapper;
     public CommentService(CommentRepository CommentRepository) {
         this.CommentRepository = CommentRepository;
     }
-
 
     private Comment setComment(CommentDto dto, Comment Comment) {
         Comment.setAuthor(dto.getAuthor());
@@ -44,9 +45,15 @@ public class CommentService implements ICommentService {
 
     @Override
     public CommentDto createComment(CommentDto dto) {
-        Comment Comment = new Comment();
-        setComment(dto, Comment);
-        return modelMapper.map(Comment, CommentDto.class);
+//        Comment Comment = new Comment();
+//        setComment(dto, Comment);
+//        return modelMapper.map(Comment, CommentDto.class);
+
+        EntitiesFactory<Comment, CommentDto> commentFactory = new EntitiesFactory<>();
+        CreateEntity<Comment, CommentDto> commentEntity = commentFactory.createEntity(dto);
+        Comment comment = commentEntity.create(dto);
+        CommentRepository.save(comment);
+        return modelMapper.map(comment, CommentDto.class);
     }
 
     @Override

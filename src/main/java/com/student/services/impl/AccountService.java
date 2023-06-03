@@ -2,8 +2,10 @@ package com.student.services.impl;
 
 import com.student.dtos.AccountDto;
 import com.student.entities.Account;
+import com.student.factories.CreateEntity;
+import com.student.factories.EntitiesFactory;
 import com.student.repositories.AccountRepository;
-import com.student.services.IAccountService;
+import com.student.services.IAccountService_command;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.student.exceptions.NotFoundException;
 
-
-
 @Service
-public class AccountService implements IAccountService {
+public class AccountService implements IAccountService_command {
 
     private final AccountRepository accountRepository;
 
@@ -25,14 +25,12 @@ public class AccountService implements IAccountService {
         this.accountRepository = accountRepository;
     }
 
-
     private Account setAccount(AccountDto dto, Account account) {
         account.setName(dto.getName().trim());
         account.setGender(dto.getGender().trim());
         account.setDateOfBirth(dto.getDateOfBirth());
         account.setEmail(dto.getEmail().trim());
         account.setPassword(dto.getPassword().trim());
-
         accountRepository.save(account);
         return account;
     }
@@ -49,8 +47,10 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDto createAccount(AccountDto dto) {
-        Account account = new Account();
-        setAccount(dto, account);
+        EntitiesFactory<Account, AccountDto> accountFactory = new EntitiesFactory<>();
+        CreateEntity<Account, AccountDto> accountEntity = accountFactory.createEntity(dto);
+        Account account = accountEntity.create(dto);
+        accountRepository.save(account);
         return modelMapper.map(account, AccountDto.class);
     }
 

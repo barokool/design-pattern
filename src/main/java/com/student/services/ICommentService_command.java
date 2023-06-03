@@ -1,11 +1,10 @@
 package com.student.services;
 
 import com.student.dtos.CommentDto;
-import com.student.dtos.TaskDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ICommentService {
+public interface ICommentService_command {
 
     CommentDto getComment(String id);
 
