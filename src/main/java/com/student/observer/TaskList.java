@@ -16,7 +16,6 @@ public class TaskList implements Subject {
         tasks = new ArrayList<>();
         observers = new ArrayList<>();
     }
-
     // Implement Subject interface methods
     @Override
     public void registerObserver(Observer observer) {

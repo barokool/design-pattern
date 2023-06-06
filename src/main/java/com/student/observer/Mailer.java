@@ -7,6 +7,4 @@ public class Mailer implements Observer {
     public void update(Task task) {
             System.out.println("Mailer: "+task.getTitle()+" đã được cập nhật");
     }
-
-
 }

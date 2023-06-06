@@ -26,7 +26,13 @@ public class TaskService implements ITaskService {
 
     }
 
-
+    @Override
+    public TaskDto createTask(TaskDto dto) {
+        Task Task = new Task();
+        setTask(dto, Task);
+        taskList.addTask(Task);
+        return modelMapper.map(Task, TaskDto.class);
+    }
 
     private Task setTask(TaskDto dto, Task Task) {
         Task.setUser(dto.getUser());
@@ -51,13 +57,7 @@ public class TaskService implements ITaskService {
         return modelMapper.map(Task, TaskDto.class);
     }
 
-    @Override
-    public TaskDto createTask(TaskDto dto) {
-        Task Task = new Task();
-        setTask(dto, Task);
-        taskList.addTask(Task);
-        return modelMapper.map(Task, TaskDto.class);
-    }
+
 
     @Override
     public TaskDto updateTask(String id, TaskDto dto) {
